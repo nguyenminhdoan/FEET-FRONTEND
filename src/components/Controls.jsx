@@ -43,27 +43,6 @@ const Controls = ({ onPredict, loading }) => {
   return (
     <div className="controls">
       <form onSubmit={handleSubmit}>
-        {/* Subsystem Selection */}
-        <div className="form-section">
-          <div className="section-title">Subsystem</div>
-          <div className="form-group">
-            <label htmlFor="subsystem">Select Subsystem:</label>
-            <select
-              id="subsystem"
-              value={subsystem}
-              onChange={(e) => setSubsystem(e.target.value)}
-              required
-            >
-              <option value="">-- Choose a subsystem --</option>
-              {subsystems.map((sub) => (
-                <option key={sub.id} value={sub.id}>
-                  {sub.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
         {/* Bus Information */}
         <div className="form-section">
           <div className="section-title">Bus Information</div>
@@ -119,6 +98,27 @@ const Controls = ({ onPredict, loading }) => {
                 required
               />
             </div>
+          </div>
+        </div>
+
+        {/* Subsystem Selection */}
+        <div className="form-section">
+          <div className="section-title">Subsystem</div>
+          <div className="form-group">
+            <label htmlFor="subsystem">Select Subsystem:</label>
+            <select
+              id="subsystem"
+              value={subsystem}
+              onChange={(e) => setSubsystem(e.target.value)}
+              required
+            >
+              <option value="">-- Choose a subsystem --</option>
+              {subsystems.map((sub) => (
+                <option key={sub.id} value={sub.id}>
+                  {sub.name}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
 
