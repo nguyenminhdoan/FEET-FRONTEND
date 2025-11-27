@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getSubsystems } from '../services/api';
+import BusVisualization from './BusVisualization';
 
 const Controls = ({ onPredict, loading }) => {
   const [subsystems, setSubsystems] = useState([]);
@@ -186,6 +187,14 @@ const Controls = ({ onPredict, loading }) => {
             </select>
           </div>
         </div>
+
+        {/* Bus Visualization */}
+        <BusVisualization
+          make={make}
+          model={model}
+          length={length}
+          subsystem={subsystem}
+        />
 
         {/* Prediction Period */}
         <div className="form-section">

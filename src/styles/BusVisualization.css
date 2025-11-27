@@ -1,0 +1,133 @@
+.bus-visualization {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.bus-image-container {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.bus-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+
+.bus-base-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+}
+
+.bus-highlight-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  animation: fadeInPulse 1s ease-in-out;
+}
+
+@keyframes fadeInPulse {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.9;
+  }
+}
+
+.subsystem-label-wrapper {
+  text-align: center;
+  margin-top: 15px;
+}
+
+.highlight-label-bottom {
+  display: inline-block;
+  background: #00A039;
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  animation: labelPulse 2s infinite;
+}
+
+@keyframes labelPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 160, 57, 0.4);
+  }
+}
+
+.bus-specs {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid #e9ecef;
+  flex-wrap: wrap;
+}
+
+.spec-item {
+  font-size: 14px;
+  color: #6C6D70;
+}
+
+.spec-item strong {
+  color: #000000;
+  margin-right: 5px;
+}
+
+.image-note {
+  text-align: center;
+  margin-top: 15px;
+  padding: 10px;
+  background: #fff9e6;
+  border-left: 4px solid #FFD700;
+  border-radius: 4px;
+  font-size: 13px;
+  color: #6C6D70;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .bus-visualization {
+    padding: 15px;
+  }
+
+  .bus-image-container {
+    padding: 15px;
+  }
+
+  .bus-specs {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .highlight-label {
+    font-size: 10px;
+    padding: 4px 10px;
+  }
+}
