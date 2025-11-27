@@ -14,7 +14,7 @@ export const getSubsystems = async () => {
   return response.data;
 };
 
-export const predictCosts = async (subsystem, startDate, endDate, age, mileage, make, model) => {
+export const predictCosts = async (subsystem, startDate, endDate, age, mileage, make, model, year, length, propulsion) => {
   const response = await api.post('/api/predict', {
     subsystem,
     start_date: startDate,
@@ -23,6 +23,9 @@ export const predictCosts = async (subsystem, startDate, endDate, age, mileage, 
     mileage_km: parseInt(mileage),
     bus_make: make,
     bus_model: model,
+    year: parseInt(year),
+    length_ft: parseInt(length),
+    propulsion_type: propulsion,
   });
   return response.data;
 };

@@ -10,6 +10,9 @@ const Controls = ({ onPredict, loading }) => {
   const [mileage, setMileage] = useState('220000');
   const [make, setMake] = useState('New Flyer');
   const [model, setModel] = useState('Xcelsior NG');
+  const [year, setYear] = useState('2023');
+  const [length, setLength] = useState('40');
+  const [propulsion, setPropulsion] = useState('CNG');
 
   useEffect(() => {
     // Set default dates (today to 1 year from now)
@@ -37,7 +40,7 @@ const Controls = ({ onPredict, loading }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onPredict(subsystem, startDate, endDate, age, mileage, make, model);
+    onPredict(subsystem, startDate, endDate, age, mileage, make, model, year, length, propulsion);
   };
 
   return (
@@ -48,7 +51,7 @@ const Controls = ({ onPredict, loading }) => {
           <div className="section-title">Bus Information</div>
           <div className="input-grid">
             <div className="form-group">
-              <label htmlFor="make">Make:</label>
+              <label htmlFor="make">Manufacturer:</label>
               <select
                 id="make"
                 value={make}
@@ -56,6 +59,11 @@ const Controls = ({ onPredict, loading }) => {
                 required
               >
                 <option value="New Flyer">New Flyer</option>
+                <option value="Gillig">Gillig</option>
+                <option value="Nova Bus">Nova Bus</option>
+                <option value="Proterra">Proterra</option>
+                <option value="BYD">BYD</option>
+                <option value="Alexander Dennis">Alexander Dennis</option>
               </select>
             </div>
 
@@ -68,11 +76,68 @@ const Controls = ({ onPredict, loading }) => {
                 required
               >
                 <option value="Xcelsior NG">Xcelsior NG</option>
+                <option value="Xcelsior">Xcelsior</option>
+                <option value="Low Floor">Low Floor</option>
+                <option value="LFS">LFS</option>
               </select>
             </div>
           </div>
 
           <div className="input-grid">
+            <div className="form-group">
+              <label htmlFor="year">Year:</label>
+              <select
+                id="year"
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+                required
+              >
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+                <option value="2016">2016</option>
+                <option value="2015">2015</option>
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="length">Length (ft):</label>
+              <select
+                id="length"
+                value={length}
+                onChange={(e) => setLength(e.target.value)}
+                required
+              >
+                <option value="30">30 ft</option>
+                <option value="35">35 ft</option>
+                <option value="40">40 ft</option>
+                <option value="60">60 ft (Articulated)</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="input-grid">
+            <div className="form-group">
+              <label htmlFor="propulsion">Propulsion:</label>
+              <select
+                id="propulsion"
+                value={propulsion}
+                onChange={(e) => setPropulsion(e.target.value)}
+                required
+              >
+                <option value="CNG">CNG (Compressed Natural Gas)</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="Electric">Electric (BEB)</option>
+                <option value="Hydrogen">Hydrogen Fuel Cell</option>
+              </select>
+            </div>
+
             <div className="form-group">
               <label htmlFor="age">Age (months):</label>
               <input
@@ -85,19 +150,19 @@ const Controls = ({ onPredict, loading }) => {
                 required
               />
             </div>
+          </div>
 
-            <div className="form-group">
-              <label htmlFor="mileage">Mileage (km):</label>
-              <input
-                type="number"
-                id="mileage"
-                value={mileage}
-                onChange={(e) => setMileage(e.target.value)}
-                placeholder="e.g., 220000"
-                min="0"
-                required
-              />
-            </div>
+          <div className="form-group">
+            <label htmlFor="mileage">Mileage (km):</label>
+            <input
+              type="number"
+              id="mileage"
+              value={mileage}
+              onChange={(e) => setMileage(e.target.value)}
+              placeholder="e.g., 220000"
+              min="0"
+              required
+            />
           </div>
         </div>
 

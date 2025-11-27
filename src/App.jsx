@@ -13,7 +13,7 @@ function App() {
   const [results, setResults] = useState(null);
   const [showResults, setShowResults] = useState(false);
 
-  const handlePredict = async (subsystem, startDate, endDate, age, mileage, make, model) => {
+  const handlePredict = async (subsystem, startDate, endDate, age, mileage, make, model, year, length, propulsion) => {
     // Validation
     if (!subsystem) {
       setError('Please select a subsystem');
@@ -46,7 +46,7 @@ function App() {
     setLoading(true);
 
     try {
-      const data = await predictCosts(subsystem, startDate, endDate, age, mileage, make, model);
+      const data = await predictCosts(subsystem, startDate, endDate, age, mileage, make, model, year, length, propulsion);
       setResults(data);
       setShowResults(true);
     } catch (err) {

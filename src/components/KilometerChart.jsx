@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -24,28 +24,28 @@ ChartJS.register(
   Filler
 );
 
-const CostChart = ({ data }) => {
+const KilometerChart = ({ data }) => {
   const chartRef = useRef(null);
 
   if (!data || !data.predictions) return null;
 
   const labels = data.predictions.map((p) => p.date);
-  const costs = data.predictions.map((p) => p.cost);
+  const kilometers = data.predictions.map((p) => p.mileage_km);
 
   const chartData = {
     labels,
     datasets: [
       {
-        label: `${data.subsystem.replace('_', ' ')} - Predicted Maintenance Cost`,
-        data: costs,
-        borderColor: 'rgb(0, 160, 57)',
-        backgroundColor: 'rgba(0, 160, 57, 0.1)',
+        label: `${data.subsystem.replace('_', ' ')} - Predicted Mileage`,
+        data: kilometers,
+        borderColor: 'rgb(108, 109, 112)',
+        backgroundColor: 'rgba(108, 109, 112, 0.1)',
         borderWidth: 3,
         fill: true,
         tension: 0.4,
         pointRadius: 5,
         pointHoverRadius: 7,
-        pointBackgroundColor: 'rgb(0, 160, 57)',
+        pointBackgroundColor: 'rgb(108, 109, 112)',
         pointBorderColor: '#fff',
         pointBorderWidth: 2,
       },
@@ -63,7 +63,7 @@ const CostChart = ({ data }) => {
       tooltip: {
         callbacks: {
           label: function (context) {
-            return 'Cost: $' + context.parsed.y.toFixed(2);
+            return 'Mileage: ' + context.parsed.y.toLocaleString() + ' km';
           },
         },
       },
@@ -73,12 +73,12 @@ const CostChart = ({ data }) => {
         beginAtZero: false,
         ticks: {
           callback: function (value) {
-            return '$' + value.toFixed(0);
+            return value.toLocaleString() + ' km';
           },
         },
         title: {
           display: true,
-          text: 'Maintenance Cost ($)',
+          text: 'Mileage (km)',
         },
       },
       x: {
@@ -97,4 +97,4 @@ const CostChart = ({ data }) => {
   );
 };
 
-export default CostChart;
+export default KilometerChart;
