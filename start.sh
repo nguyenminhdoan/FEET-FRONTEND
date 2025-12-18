@@ -6,9 +6,12 @@ echo "Starting Production Server"
 echo "======================================"
 echo ""
 
-# Check if docker-compose is available
-if ! command -v docker-compose &> /dev/null
-then
+# Check if docker compose is available (v2 or v1)
+if command -v docker &> /dev/null && docker compose version &> /dev/null; then
+    DOCKER_COMPOSE="docker compose"
+elif command -v docker-compose &> /dev/null; then
+    DOCKER_COMPOSE="docker-compose"
+else
     echo "Error: docker-compose is not installed"
     echo "Please install Docker and Docker Compose first"
     exit 1
@@ -24,7 +27,7 @@ fi
 echo "Building and starting frontend service..."
 echo ""
 
-docker-compose up -d --build
+$DOCKER_COMPOSE up -d --build
 
 echo ""
 echo "======================================"
@@ -38,8 +41,8 @@ echo "Backend API should be running at:"
 echo "  - API: http://localhost:8000"
 echo ""
 echo "To view logs:"
-echo "  docker-compose logs -f"
+echo "  $DOCKER_COMPOSE logs -f"
 echo ""
 echo "To stop the service:"
-echo "  docker-compose down"
+echo "  $DOCKER_COMPOSE down"
 echo ""

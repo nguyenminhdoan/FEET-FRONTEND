@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { getSubsystems } from '../services/api';
 import BusVisualization from './BusVisualization';
 
 const Controls = ({ onPredict, loading }) => {
   const [subsystems, setSubsystems] = useState([]);
   const [subsystem, setSubsystem] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [age, setAge] = useState('66');
@@ -14,6 +16,8 @@ const Controls = ({ onPredict, loading }) => {
   const [year, setYear] = useState('2023');
   const [length, setLength] = useState('40');
   const [propulsion, setPropulsion] = useState('CNG');
+
+  const dropdownRef = useRef(null);
 
   useEffect(() => {
     // Set default dates (today to 1 year from now)
@@ -30,6 +34,18 @@ const Controls = ({ onPredict, loading }) => {
     loadSubsystems();
   }, []);
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const loadSubsystems = async () => {
     try {
       const data = await getSubsystems();
@@ -39,8 +55,36 @@ const Controls = ({ onPredict, loading }) => {
     }
   };
 
+  // Filter subsystems based on search term
+  const filteredSubsystems = subsystems.filter((sub) =>
+    sub.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Get the selected subsystem name for display
+  const selectedSubsystemName = subsystems.find((sub) => sub.id === subsystem)?.name || '';
+
+  const handleSubsystemSelect = (subId, subName) => {
+    setSubsystem(subId);
+    setSearchTerm(subName);
+    setShowDropdown(false);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setShowDropdown(true);
+    setSubsystem(''); // Clear selection when user types
+  };
+
+  const handleInputClick = () => {
+    setShowDropdown(true);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!subsystem) {
+      alert('Please select a subsystem');
+      return;
+    }
     onPredict(subsystem, startDate, endDate, age, mileage, make, model, year, length, propulsion);
   };
 
@@ -172,19 +216,44 @@ const Controls = ({ onPredict, loading }) => {
           <div className="section-title">Subsystem</div>
           <div className="form-group">
             <label htmlFor="subsystem">Select Subsystem:</label>
-            <select
-              id="subsystem"
-              value={subsystem}
-              onChange={(e) => setSubsystem(e.target.value)}
-              required
-            >
-              <option value="">-- Choose a subsystem --</option>
-              {subsystems.map((sub) => (
-                <option key={sub.id} value={sub.id}>
-                  {sub.name}
-                </option>
-              ))}
-            </select>
+            <div className="searchable-select" ref={dropdownRef}>
+              <input
+                type="text"
+                id="subsystem"
+                className="search-input"
+                value={searchTerm || selectedSubsystemName}
+                onChange={handleSearchChange}
+                onClick={handleInputClick}
+                onFocus={handleInputClick}
+                placeholder="Click to select or type to search subsystems..."
+                autoComplete="off"
+                required
+              />
+              {showDropdown && (
+                <div className="dropdown-list">
+                  {filteredSubsystems.length > 0 ? (
+                    <>
+                      <div className="dropdown-header">
+                        {filteredSubsystems.length} subsystem{filteredSubsystems.length !== 1 ? 's' : ''} found
+                      </div>
+                      {filteredSubsystems.map((sub) => (
+                        <div
+                          key={sub.id}
+                          className={`dropdown-item ${subsystem === sub.id ? 'selected' : ''}`}
+                          onClick={() => handleSubsystemSelect(sub.id, sub.name)}
+                        >
+                          {sub.name}
+                        </div>
+                      ))}
+                    </>
+                  ) : (
+                    <div className="dropdown-item no-results">
+                      {searchTerm ? `No subsystems matching "${searchTerm}"` : 'Loading subsystems...'}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
