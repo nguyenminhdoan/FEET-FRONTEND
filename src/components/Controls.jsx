@@ -236,20 +236,42 @@ const Controls = ({ onPredict, loading }) => {
                       <div className="dropdown-header">
                         {filteredSubsystems.length} subsystem{filteredSubsystems.length !== 1 ? 's' : ''} found
                       </div>
-                      {filteredSubsystems.map((sub) => (
-                        <div
-                          key={sub.id}
-                          className={`dropdown-item ${subsystem === sub.id ? 'selected' : ''} ${sub.reliability === 'unreliable' ? 'unreliable' : sub.reliability === 'limited' ? 'limited' : ''}`}
-                          onClick={() => handleSubsystemSelect(sub.id, sub.name)}
-                          title={`${sub.reliability === 'unreliable' ? '⚠️ UNRELIABLE' : sub.reliability === 'limited' ? '⚠️ Limited Reliability' : '✓ Reliable'} (${sub.sample_count} samples)`}
-                        >
-                          <span className="reliability-icon">
-                            {sub.reliability === 'unreliable' ? '⚠️' : sub.reliability === 'limited' ? '⚠️' : '✓'}
-                          </span>
-                          {sub.name}
-                          {sub.reliability === 'unreliable' && <span className="unreliable-badge">NOT RELIABLE</span>}
-                        </div>
-                      ))}
+                      {filteredSubsystems.map((sub) => {
+                        return (
+                          <div
+                            key={sub.id}
+                            className={`dropdown-item ${subsystem === sub.id ? 'selected' : ''} ${sub.reliability === 'unreliable' ? 'unreliable' : sub.reliability === 'limited' ? 'limited' : ''}`}
+                            onClick={() => handleSubsystemSelect(sub.id, sub.name)}
+                          >
+                            <div className="dropdown-item-content">
+                              <div className="dropdown-item-header">
+                                <span className="reliability-icon">
+                                  {sub.reliability === 'unreliable' ? '⚠️' : sub.reliability === 'limited' ? '⚠️' : '✓'}
+                                </span>
+                                <span className="subsystem-name">{sub.name}</span>
+                                {sub.reliability === 'unreliable' && <span className="unreliable-badge">NOT RELIABLE</span>}
+                              </div>
+                              <div className="reliability-explanation">
+                                {sub.reliability === 'unreliable' && (
+                                  <span className="explanation-text unreliable-text">
+                                    Only {sub.sample_count} samples - Insufficient data. DO NOT use for decisions.
+                                  </span>
+                                )}
+                                {sub.reliability === 'limited' && (
+                                  <span className="explanation-text limited-text">
+                                    {sub.sample_count} samples - Limited data. Use with caution.
+                                  </span>
+                                )}
+                                {sub.reliability === 'reliable' && (
+                                  <span className="explanation-text reliable-text">
+                                    {sub.sample_count} samples - Reliable predictions.
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </>
                   ) : (
                     <div className="dropdown-item no-results">
