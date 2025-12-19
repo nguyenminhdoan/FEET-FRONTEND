@@ -239,10 +239,15 @@ const Controls = ({ onPredict, loading }) => {
                       {filteredSubsystems.map((sub) => (
                         <div
                           key={sub.id}
-                          className={`dropdown-item ${subsystem === sub.id ? 'selected' : ''}`}
+                          className={`dropdown-item ${subsystem === sub.id ? 'selected' : ''} ${sub.reliability === 'unreliable' ? 'unreliable' : sub.reliability === 'limited' ? 'limited' : ''}`}
                           onClick={() => handleSubsystemSelect(sub.id, sub.name)}
+                          title={`${sub.reliability === 'unreliable' ? '⚠️ UNRELIABLE' : sub.reliability === 'limited' ? '⚠️ Limited Reliability' : '✓ Reliable'} (${sub.sample_count} samples)`}
                         >
+                          <span className="reliability-icon">
+                            {sub.reliability === 'unreliable' ? '⚠️' : sub.reliability === 'limited' ? '⚠️' : '✓'}
+                          </span>
                           {sub.name}
+                          {sub.reliability === 'unreliable' && <span className="unreliable-badge">NOT RELIABLE</span>}
                         </div>
                       ))}
                     </>
